@@ -11,7 +11,7 @@ import {
 } from "../../src/store/actions/index";
 import LocationDetail from "../../src/components/LocationDetail/LocationDetail";
 import { withNavigation } from "react-navigation";
-import Orientation from 'react-native-orientation';
+
 
 class Search extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -45,7 +45,7 @@ class Search extends Component {
     const { navigation } = this.props;
     this.focusListener = navigation.addListener("didFocus", () => {
       this.props.onLoadLocations();
-      Orientation.lockToPortrait();
+      
     });
   }
 

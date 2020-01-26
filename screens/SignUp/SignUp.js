@@ -2,12 +2,12 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import * as firebase from 'firebase'
 import { Button, Input, Icon, Text } from 'react-native-elements'
-import Orientation from 'react-native-orientation';
+
 
 export default class SignUp extends React.Component {
 
   componentDidMount() {
-    Orientation.lockToPortrait();
+    
   }
   state = { email: '', password: '', errorMessage: null }
 

@@ -12,7 +12,7 @@ import {
 import { connect } from "react-redux";
 //import CustomCalloutView from "../../../src/components/CustomCalloutView/CustomCalloutView";
 import { withNavigation } from "react-navigation";
-import Orientation from "react-native-orientation";
+
 import CustomMarkers from "./../../src/components/CustomMarkers/CustomMarkers";
 import LocationDetail from "./../../src/components/LocationDetail/LocationDetail";
 
@@ -88,7 +88,7 @@ class MapTest extends Component {
     this.focusListener = navigation.addListener("didFocus", () => {
       this.props.onLoadLocations();
       this.getLocationHandler();
-      Orientation.lockToPortrait();
+      
     });
   }
 

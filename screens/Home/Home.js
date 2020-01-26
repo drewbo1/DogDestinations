@@ -5,7 +5,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { Icon, Card } from "react-native-elements";
 import profileImage from "./../../src/assets/walking.jpg";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import  Orientation  from "react-native-orientation";
+
 
 export default class Home extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -28,7 +28,7 @@ export default class Home extends React.Component {
   componentDidMount() {
     const { currentUser } = firebase.auth();
     this.setState({ currentUser });
-    Orientation.lockToPortrait();
+    
   }
 
   render() {
