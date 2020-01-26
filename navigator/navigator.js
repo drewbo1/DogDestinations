@@ -14,10 +14,10 @@ import PasswordReset from "../screens/PasswordReset";
 import React from "react";
 import {
   createBottomTabNavigator,
-  createStackNavigator,
   createSwitchNavigator,
   createAppContainer
 } from "react-navigation";
+import {createStackNavigator} from 'react-navigation-stack';
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const LoginStack = createStackNavigator(

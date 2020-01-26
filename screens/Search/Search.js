@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { StyleSheet, View, ActivityIndicator, Text } from "react-native";
 import { Icon } from "react-native-elements";
 import { connect } from "react-redux";
-import LocationList from "../../../src/components/LocationList/LocationList";
+import LocationList from "../../src/components/LocationLIst/LocationList.js";
 import {
   deleteLocation,
   selectLocation,
   deselectLocation,
   getLocations
-} from "../../../src/store/actions/index";
-import LocationDetail from "../../../src/components/LocationDetail/LocationDetail";
+} from "../../src/store/actions/index";
+import LocationDetail from "../../src/components/LocationDetail/LocationDetail";
 import { withNavigation } from "react-navigation";
 import Orientation from 'react-native-orientation';
 

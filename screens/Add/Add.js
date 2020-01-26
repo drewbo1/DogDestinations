@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Dimensions, Picker, ScrollView, Keyboard, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { Rating, Input, Button, Text } from 'react-native-elements'
-import { addLocation } from '../../../src/store/actions/index'
-import PickLocation from '../../../src/components/PickLocation/PickLocation';
+import { addLocation } from './../../src/store/actions/index'
+import PickLocation from './../../src/components/PickLocation/PickLocation';
 
 
 class Add extends Component {

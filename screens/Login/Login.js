@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Button, Input, Text, Icon } from 'react-native-elements'
-import firebase from 'react-native-firebase'
+import * as firebase from 'firebase'
 
 export default class Login extends React.Component {
   state = { email: '', password: '', errorMessage: null }

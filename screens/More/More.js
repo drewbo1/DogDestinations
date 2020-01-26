@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
 import { Icon, Card } from 'react-native-elements'
-import proCardImage from '../../../src/assets/profile-dogs.jpg' 
-import alertImage from '../../../src/assets/alert.jpg'
+import proCardImage from './../../src/assets/profile-dogs.jpg' 
+import alertImage from './../../src/assets/alert.jpg'
 
 export default class More extends React.Component {
 

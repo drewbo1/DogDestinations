@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import firebase from 'react-native-firebase'
+import * as firebase from 'firebase'
 import { Button, Input, Icon, Text } from 'react-native-elements'
 import Orientation from 'react-native-orientation';
 

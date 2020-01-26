@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import { Marker, Callout } from "react-native-maps";
+import { Marker } from "react-native-maps";
 import { View, StyleSheet, Dimensions, Text } from "react-native";
 import { Icon } from "react-native-elements";
 import {
@@ -8,13 +8,13 @@ import {
   selectLocation,
   deselectLocation,
   getLocations
-} from "../../../src/store/actions/index";
+} from "./../../src/store/actions/index";
 import { connect } from "react-redux";
 //import CustomCalloutView from "../../../src/components/CustomCalloutView/CustomCalloutView";
 import { withNavigation } from "react-navigation";
 import Orientation from "react-native-orientation";
-import CustomMarkers from "../../../src/components/CustomMarkers/CustomMarkers";
-import LocationDetail from "../../../src/components/LocationDetail/LocationDetail";
+import CustomMarkers from "./../../src/components/CustomMarkers/CustomMarkers";
+import LocationDetail from "./../../src/components/LocationDetail/LocationDetail";
 
 class MapTest extends Component {
   static navigationOptions = ({ navigation }) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Text, Input, Icon } from "react-native-elements";
-import firebase from "react-native-firebase";
+import * as firebase from "firebase";
 
 export default class PasswordReset extends React.Component {
   constructor(props) {

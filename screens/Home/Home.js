@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, Image, Text, View, ScrollView } from "react-native";
-import firebase from "react-native-firebase";
+import * as firebase from "firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Icon, Card } from "react-native-elements";
-import profileImage from "../../../src/assets/walking.jpg";
+import profileImage from "./../../src/assets/walking.jpg";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import  Orientation  from "react-native-orientation";
 
