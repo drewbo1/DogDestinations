@@ -13,10 +13,10 @@ import Profile from "../screens/Profile";
 import PasswordReset from "../screens/PasswordReset";
 import React from "react";
 import {
-  createBottomTabNavigator,
   createSwitchNavigator,
   createAppContainer
 } from "react-navigation";
+import { createBottomTabNavigator } from 'react-navigation-tabs'
 import {createStackNavigator} from 'react-navigation-stack';
 import Ionicons from "react-native-vector-icons/Ionicons";
 
