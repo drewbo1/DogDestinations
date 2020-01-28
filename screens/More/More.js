@@ -1,8 +1,9 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
-import { Icon, Card } from 'react-native-elements'
+import { Icon, Card, Button } from 'react-native-elements'
 import proCardImage from './../../src/assets/profile-dogs.jpg' 
 import alertImage from './../../src/assets/alert.jpg'
+import * as firebase from 'firebase';
 
 export default class More extends React.Component {
 
@@ -51,6 +52,13 @@ export default class More extends React.Component {
        </Text>
       </Card>
       </TouchableOpacity>
+      <Button 
+      style={styles.button}
+      title="Log off"
+      onPress={() => {
+          firebase.auth().signOut();
+      }}>
+        </Button>
       </View>
       </ScrollView>
     )
@@ -62,5 +70,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  button: {
+      padding: 30
   }
 })

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, KeyboardAvoidingView } from 'react-native'
 import { Button, Input, Text, Icon } from 'react-native-elements'
 import * as firebase from 'firebase'
 
@@ -19,7 +19,10 @@ export default class Login extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView 
+      style={styles.container}
+      enabled
+      behavior="padding">
         <Text style={styles.mainTitle} h1>Log in</Text>
         {this.state.errorMessage &&
           <Text style={{ color: 'red' }}>
@@ -65,7 +68,7 @@ export default class Login extends React.Component {
           onPress={() => this.props.navigation.push('PasswordReset')}
           buttonStyle={styles.button}
         />
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }

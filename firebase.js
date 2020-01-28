@@ -15,6 +15,7 @@ const config = {
   if(!firebase.apps.length) {
 
     firebase.initializeApp(config);
+    console.log('Firebase has started');
   }
 
 auth = firebase.auth()
