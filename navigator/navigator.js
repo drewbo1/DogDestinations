@@ -12,12 +12,9 @@ import Events from "../screens/Events";
 import Profile from "../screens/Profile";
 import PasswordReset from "../screens/PasswordReset";
 import React from "react";
-import {
-  createSwitchNavigator,
-  createAppContainer
-} from "react-navigation";
-import { createBottomTabNavigator } from 'react-navigation-tabs'
-import {createStackNavigator} from 'react-navigation-stack';
+import { createSwitchNavigator, createAppContainer } from "react-navigation";
+import { createBottomTabNavigator } from "react-navigation-tabs";
+import { createStackNavigator } from "react-navigation-stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const LoginStack = createStackNavigator(
@@ -87,6 +84,9 @@ const MainTabNavigator = createBottomTabNavigator(
     Map: {
       screen: MapStack
     },
+    Add: {
+      screen: Add
+    },
     Search: {
       screen: SearchStack
     },
@@ -104,6 +104,8 @@ const MainTabNavigator = createBottomTabNavigator(
           iconName = `ios-home`;
         } else if (routeName === "Map") {
           iconName = `ios-map`;
+        } else if (routeName === "Add") {
+          iconName = `ios-add-circle-outline`;
         } else if (routeName === "Search") {
           iconName = `ios-search`;
         } else if (routeName === "More") {

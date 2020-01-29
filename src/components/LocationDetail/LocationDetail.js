@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView from 'react-native-maps';
-import { Modal, View, Text, Image, Button, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { Modal, View, Text, Image, Button, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
 import beaglePic from '../../assets/beagle.jpg';
 import { Rating } from 'react-native-elements';
 
@@ -45,6 +45,7 @@ const locationDetail = props => {
         
     <Modal onRequestClosed={props.onModalClosed} 
     visible={props.selectedLocation !== null} animationType="slide">
+    <SafeAreaView>
     <ScrollView>
         <View style={styles.modalContainer}>
             {modalContent}
@@ -59,6 +60,7 @@ const locationDetail = props => {
             </View>
         </View>
         </ScrollView>
+        </SafeAreaView>
     </Modal>
     
     )};

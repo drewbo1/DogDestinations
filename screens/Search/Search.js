@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, ActivityIndicator, Text } from "react-native";
+import { StyleSheet, View, ActivityIndicator, Text, SafeAreaView } from "react-native";
 import { Icon } from "react-native-elements";
 import { connect } from "react-redux";
 import LocationList from "../../src/components/LocationLIst/LocationList.js";
@@ -66,7 +66,9 @@ class Search extends Component {
     }
 
     return (
+       
       <View style={styles.container}>
+       <SafeAreaView>
         <Text style={styles.heading}>Search for an item</Text>
         <Text style={styles.subHeading}>
           Press an item to view its information
@@ -77,16 +79,18 @@ class Search extends Component {
           onModalClosed={this.modalClosedHandler}
         />
         <View>{locList}</View>
+        </SafeAreaView>
       </View>
+     
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
+    justifyContent: "center",
     backgroundColor: "#fff",
-    alignItems: "center"
+    
   },
   heading: {
     fontWeight: "bold",

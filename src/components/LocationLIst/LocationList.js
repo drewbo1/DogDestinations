@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, FlatList } from 'react-native';
-
-import ListItem from '../ListItem/ListItem';
+import { ListItem, Icon } from 'react-native-elements';
+//import Item from '../Item/Item';
 
 const locationList = props => {
  
@@ -18,13 +18,14 @@ const locationList = props => {
         data={props.locations.sort((a,b) => a.name.localeCompare(b.name))}
         renderItem={(info) => (
             <ListItem
-        locationName={info.item.name} 
+        title={info.item.name} 
         locationImage={info.item.image}
         locationType={info.item.type}
-        locationArea={info.item.area}
-        locationIcon={typeIcon[info.item.type]}
-        locationRating={info.item.rating}
-        onItemPressed={() => props.onItemSelected(info.item.key)}  
+        subtitle={info.item.area}
+        leftIcon={{name: typeIcon[info.item.type], type: "ionicon"}}
+        rightElement={info.item.rating}
+        onPress={() => props.onItemSelected(info.item.key)}
+        bottomDivider  
         />
         )}
        
@@ -34,8 +35,8 @@ const locationList = props => {
 
 const styles = StyleSheet.create({
     listContainer: {
-        width: "90%",
-        height: "80%"
+       
+        height: "90%"
       },
       
 });

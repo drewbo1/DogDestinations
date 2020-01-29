@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Dimensions, Picker, ScrollView, Keyboard, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Dimensions, Picker, ScrollView, Keyboard, ActivityIndicator, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { Rating, Input, Button, Text } from 'react-native-elements'
 import { addLocation } from './../../src/store/actions/index'
@@ -162,6 +162,7 @@ class Add extends Component {
     
     return (
 
+        <SafeAreaView>
      <ScrollView> 
      <View style={styles.container}>
      <Text style={styles.heading}>Add a new location</Text>
@@ -214,6 +215,7 @@ class Add extends Component {
        
      </View> 
      </ScrollView>
+     </SafeAreaView>
     );
   }
 }

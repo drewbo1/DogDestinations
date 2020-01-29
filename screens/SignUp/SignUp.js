@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, KeyboardAvoidingView } from 'react-native'
 import * as firebase from 'firebase'
 import { Button, Input, Icon, Text } from 'react-native-elements'
+import FormInput from '../../src/components/FormInput/FormInput'
 
 
 export default class SignUp extends React.Component {
@@ -9,10 +10,10 @@ export default class SignUp extends React.Component {
   componentDidMount() {
     
   }
-  state = { email: '', password: '', errorMessage: null }
+  state = { email: '', password: '',reenterPassword: '', errorMessage: null }
 
   handleSignUp = () => {
-    const { email, password } = this.state
+    const { email, password, reenterPassword } = this.state
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -53,6 +54,18 @@ export default class SignUp extends React.Component {
           style={styles.textInput}
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
+        />
+        <Input
+          secureTextEntry
+          leftIcon={<Icon
+        name='ios-lock'
+        type='ionicon'
+        />}
+          placeholder="Re-enter Password"
+          autoCapitalize="none"
+          style={styles.textInput}
+          onChangeText={reenterPassword => this.setState({ reenterPassword })}
+          value={this.state.reenterPassword}
         />
         <Button 
         title="Sign Up" 
