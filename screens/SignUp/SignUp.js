@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     
   },
   mainTitle: {
+    flex: 1,
     paddingBottom: 50,
   },
   textInput: {

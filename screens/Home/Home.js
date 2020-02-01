@@ -48,10 +48,10 @@ export default class Home extends React.Component {
               }}
             />
             <Text style={styles.welcome}>
-              Hi Andy,{"\n"} how is Scarlett today?
+              Hi {currentUser.email},{"\n"} how is Scarlet today?
             </Text>
           </View>
-          <Text style={styles.heading}>Welcome to the TM470 app</Text>
+          <Text style={styles.heading}>Welcome to Dog Destinations</Text>
 
           <Text style={styles.heading}>New alerts</Text>
           <TouchableOpacity

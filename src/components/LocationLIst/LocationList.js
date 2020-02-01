@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, FlatList } from 'react-native';
 import { ListItem, Icon } from 'react-native-elements';
-//import Item from '../Item/Item';
+import { Rating } from 'react-native-elements';
 
 const locationList = props => {
  
@@ -23,7 +23,10 @@ const locationList = props => {
         locationType={info.item.type}
         subtitle={info.item.area}
         leftIcon={{name: typeIcon[info.item.type], type: "ionicon"}}
-        rightElement={info.item.rating}
+        rightElement={<Rating 
+        ratingCount={5}
+        readonly
+        startingValue={info.item.rating}/>}
         onPress={() => props.onItemSelected(info.item.key)}
         bottomDivider  
         />
