@@ -48,7 +48,7 @@ export default class Home extends React.Component {
               }}
             />
             <Text style={styles.welcome}>
-              Hi {currentUser.email},{"\n"} how is Scarlet today?
+              Hi Andy,{"\n"} how is Scarlet today?
             </Text>
           </View>
           <Text style={styles.heading}>Welcome to Dog Destinations</Text>

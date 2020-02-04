@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, FlatList } from 'react-native';
-import { ListItem, Icon } from 'react-native-elements';
+import { ListItem, Icon, SearchBar } from 'react-native-elements';
 import { Rating } from 'react-native-elements';
 
 const locationList = props => {
@@ -13,10 +13,12 @@ const locationList = props => {
   };
  
       return (
+        
         <FlatList 
         style={styles.listContainer}
         data={props.locations.sort((a,b) => a.name.localeCompare(b.name))}
         renderItem={(info) => (
+         
             <ListItem
         title={info.item.name} 
         locationImage={info.item.image}
@@ -25,6 +27,7 @@ const locationList = props => {
         leftIcon={{name: typeIcon[info.item.type], type: "ionicon"}}
         rightElement={<Rating 
         ratingCount={5}
+        imageSize={15}
         readonly
         startingValue={info.item.rating}/>}
         onPress={() => props.onItemSelected(info.item.key)}

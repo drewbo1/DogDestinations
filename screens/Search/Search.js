@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ActivityIndicator, Text, SafeAreaView } from "react-native";
-import { Icon } from "react-native-elements";
+import { Icon, SearchBar } from "react-native-elements";
 import { connect } from "react-redux";
 import LocationList from "../../src/components/LocationLIst/LocationList.js";
 import {
@@ -29,6 +29,18 @@ class Search extends Component {
     };
   };
 
+  searchFilterFunction = text => {    
+    const newData = this.props.locations.filter(info => {      
+      const itemData = `${info.item.name.toUpperCase()}`;
+      
+       const textData = text.toUpperCase();
+        
+       return itemData.indexOf(textData) > -1;    
+    });
+    
+    this.setState({ data: newData });  
+  };
+
   locationSelectedHandler = key => {
     this.props.onSelectLocation(key);
   };
@@ -55,6 +67,7 @@ class Search extends Component {
 
   render() {
     let locList = (
+      
       <LocationList
         style={styles.locationList}
         locations={this.props.locations}
@@ -69,10 +82,9 @@ class Search extends Component {
        
       <View style={styles.container}>
        <SafeAreaView>
-        <Text style={styles.heading}>Search for an item</Text>
-        <Text style={styles.subHeading}>
-          Press an item to view its information
-        </Text>
+          
+        
+        
         <LocationDetail
           selectedLocation={this.props.selectedLocation}
           onItemDeleted={this.locationDeletedHandler}
