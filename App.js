@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import * as firebase from 'firebase';
+import { auth } from './firebase'
 import { Provider } from "react-redux";
 import configureStore from "./src/store/storeConfig";
 import Navigator from "./navigator/Navigator";

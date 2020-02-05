@@ -6,6 +6,10 @@ import * as firebase from 'firebase';
 
 export default class Loading extends React.Component {
   componentDidMount() {
+    this.checkIfLoggedIn();
+  }
+
+  checkIfLoggedIn = () => {
     firebase.auth().onAuthStateChanged(user => {
       this.props.navigation.navigate(user ? 'Home' : 'SignUp')
     })

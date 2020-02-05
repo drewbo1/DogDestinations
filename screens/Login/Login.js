@@ -41,6 +41,25 @@ export default class Login extends React.Component {
     rightIcon: "ios-eye"
   };
 
+  signInWithGoogleAsync = async () => {
+    try {
+      const result = await Google.logInAsync({
+        //androidClientId: YOUR_CLIENT_ID_HERE,
+        behavior:'web',
+        iosClientId: '319623885326-mqtr2rg5unfiellgrqi8mnaamnhi102e.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
+      });
+  
+      if (result.type === 'success') {
+        return result.accessToken;
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      return { error: true };
+    }
+  }
+
 
   handleEmailChange = email => {
     this.setState({ email });
@@ -144,6 +163,20 @@ export default class Login extends React.Component {
             type="clear"
             onPress={() => this.props.navigation.push("PasswordReset")}
             buttonStyle={styles.button}
+          />
+          <Button
+          icon={
+            <Icon
+            name="logo-google"
+            type="ionicon"
+            size={25}
+            color="white"
+            marginRight={10}
+            />
+          }
+          title="Sign in with Google"
+          buttonStyle={styles.button}
+          onPress={() => this.signInWithGoogleAsync()}
           />
         </SafeAreaView>
       </KeyboardAvoidingView>
