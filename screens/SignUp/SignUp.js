@@ -55,28 +55,35 @@ export default class SignUp extends React.Component {
       firebase
         .auth()
         .createUserWithEmailAndPassword(values.email, values.password)
+        .then(cred => {
+          return firebase
+            .database()
+            .ref("/users/" + cred.user.uid)
+            .set({
+              name: values.name,
+              email: cred.user.email,
+              created_at: Date.now()
+            });
+        })
         .then(user => this.props.navigation.navigate("Home"))
         .catch(error => this.setState({ errorMessage: error.message }));
     }
   };
-    handlePasswordVisibility = () => {
-      this.setState(prevState => ({
-        passwordIcon:
-          prevState.passwordIcon === "ios-eye" ? "ios-eye-off" : "ios-eye",
-        passwordVisibility: !prevState.passwordVisibility
-      }))
-    };
+  handlePasswordVisibility = () => {
+    this.setState(prevState => ({
+      passwordIcon:
+        prevState.passwordIcon === "ios-eye" ? "ios-eye-off" : "ios-eye",
+      passwordVisibility: !prevState.passwordVisibility
+    }));
+  };
 
-    handleConfirmPasswordVisibility = () => {
-      this.setState(prevState => ({
-        confirmPasswordIcon:
-          prevState.confirmPasswordIcon === "ios-eye"
-            ? "ios-eye-off"
-            : "ios-eye",
-        confirmPasswordVisibility: !prevState.confirmPasswordVisibility
-      }))
-    };
-  
+  handleConfirmPasswordVisibility = () => {
+    this.setState(prevState => ({
+      confirmPasswordIcon:
+        prevState.confirmPasswordIcon === "ios-eye" ? "ios-eye-off" : "ios-eye",
+      confirmPasswordVisibility: !prevState.confirmPasswordVisibility
+    }));
+  };
 
   render() {
     const {
@@ -116,6 +123,17 @@ export default class SignUp extends React.Component {
               handleBlur
             }) => (
               <Fragment>
+                <FormInput
+                  name="name"
+                  value={values.name}
+                  onChangeText={handleChange("name")}
+                  placeholder="Enter your full name"
+                  iconName="md-person"
+                  iconColor="#2C384A"
+                  onBlur={handleBlur("name")}
+                  autoFocus
+                />
+                <ErrorMessage errorValue={touched.name && errors.name} />
                 <FormInput
                   name="email"
                   value={values.email}

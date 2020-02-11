@@ -1,7 +1,6 @@
-import * as firebase from 'firebase';
-require('firebase/auth')
 
-const config = {
+
+export const firebaseConfig = {
     apiKey: "AIzaSyADjp3ZVLLGGh9WLenYD3p7fcW3XKewEEc",
     authDomain: "dog-destinations.firebaseapp.com",
     databaseURL: "https://dog-destinations.firebaseio.com",
@@ -12,12 +11,4 @@ const config = {
     measurementId: "G-BKT25P7YCV"
   };
   
-  if(!firebase.apps.length) {
-
-    firebase.initializeApp(config);
-    console.log('Firebase has started');
-  }
-
-auth = firebase.auth()
-  export default firebase
   

@@ -11,7 +11,7 @@ export default class Home extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: "Home",
-      headerRight: (
+      headerRight: () =>
         <Icon
           name="ios-add"
           type="ionicon"
@@ -19,20 +19,31 @@ export default class Home extends React.Component {
           iconStyle={{ paddingRight: 20 }}
           onPress={() => navigation.push("Add")}
         />
-      )
+      
     };
   };
 
-  state = { currentUser: null };
+  
 
   componentDidMount() {
-    const { currentUser } = firebase.auth();
-    this.setState({ currentUser });
+    var user = firebase.auth().currentUser;
+    console.log(user);
+
+    if(!user.emailVerified) {
+      user.sendEmailVerification().then(function() {
+        alert('Check your email to complete the sign up process');
+      }).catch(function(error) {
+        alert('There was an error, verification email not sent')
+      });
+    };
+  
+
+    
     
   }
 
   render() {
-    const { currentUser } = this.state;
+   
 
     return (
       <ScrollView>

@@ -1,8 +1,16 @@
 import React, { Component } from "react";
-import { auth } from './firebase'
 import { Provider } from "react-redux";
 import configureStore from "./src/store/storeConfig";
 import Navigator from "./navigator/Navigator";
+import * as firebase from 'firebase';
+import { firebaseConfig } from './config';
+
+if(!firebase.apps.length) {
+
+  firebase.initializeApp(firebaseConfig);
+  console.log('Firebase has started');
+}
+
 
 const store = configureStore();
 
