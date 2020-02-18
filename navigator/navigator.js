@@ -11,7 +11,6 @@ import Alerts from "../screens/Alerts";
 import Events from "../screens/Events";
 import Profile from "../screens/Profile";
 import PasswordReset from "../screens/PasswordReset";
-import EmailValidation from "../screens/EmailValidation";
 import React from "react";
 import { createSwitchNavigator, createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
@@ -21,23 +20,14 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 const LoginStack = createStackNavigator(
   {
     Login: Login,
-    PasswordReset: PasswordReset,
-    EmailValidation: EmailValidation,
+    PasswordReset: PasswordReset
   },
   { headerMode: "none" }
 );
 
-const SignUpStack = createStackNavigator(
-  {
-    SignUp: SignUp,
-    EmailValidation: EmailValidation
-  },
-  { headerMode: "none"}
-);
-
 const AuthTabNavigator = createBottomTabNavigator(
   {
-    SignUp: SignUpStack,
+    SignUp: SignUp,
     Login: LoginStack
   },
   {
