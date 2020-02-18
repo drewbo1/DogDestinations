@@ -26,10 +26,21 @@ export default class Home extends React.Component {
   
 
   componentDidMount() {
-   
+    var user = firebase.auth().currentUser;
+    console.log(user);
+
+    if(!user.emailVerified) {
+      user.sendEmailVerification().then(function() {
+        alert('Check your email to complete the sign up process');
+      }).catch(function(error) {
+        alert('There was an error, verification email not sent')
+      });
+    };
+  
 
     
-    }
+    
+  }
 
   render() {
    
