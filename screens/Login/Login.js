@@ -38,80 +38,85 @@ export default class Login extends React.Component {
     if (firebaseUser) {
       var providerData = firebaseUser.providerData;
       for (var i = 0; i < providerData.length; i++) {
-        if (providerData[i].providerId === firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
-            providerData[i].uid === googleUser.getBasicProfile().getId()) {
+        if (
+          providerData[i].providerId ===
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+          providerData[i].uid === googleUser.getBasicProfile().getId()
+        ) {
           // We don't need to reauth the Firebase connection.
           return true;
         }
       }
     }
     return false;
-  } 
+  };
 
   onSignIn = googleUser => {
-    console.log('Google Auth Response', googleUser);
+    console.log("Google Auth Response", googleUser);
     // We need to register an Observer on Firebase Auth to make sure auth is initialized.
-    var unsubscribe = firebase.auth().onAuthStateChanged(function(firebaseUser) {
-      unsubscribe();
-      // Check if we are already signed-in Firebase with the correct user.
-      if (!this.isUserEqual(googleUser, firebaseUser)) {
-        // Build Firebase credential with the Google ID token.
-        var credential = firebase.auth.GoogleAuthProvider.credential(
+    var unsubscribe = firebase.auth().onAuthStateChanged(
+      function(firebaseUser) {
+        unsubscribe();
+        // Check if we are already signed-in Firebase with the correct user.
+        if (!this.isUserEqual(googleUser, firebaseUser)) {
+          // Build Firebase credential with the Google ID token.
+          var credential = firebase.auth.GoogleAuthProvider.credential(
             googleUser.idToken,
             googleUser.accessToken
-        );
-        // Sign in with credential from the Google user.
-        firebase
-        .auth()
-        .signInWithCredential(credential)
-        .then(function(result) {
-          console.log('user signed in ');
-          if(result.additionalUserInfo.isNewUser)
-          {
-            firebase
-            .database()
-            .ref('/users/' + result.user.uid)
-            .set({
-              gmail: result.user.email,
-              profile_picture: result.additionalUserInfo.profile.picture,
-              first_name: result.additionalUserInfo.profile.given_name,
-              last_name: result.additionalUserInfo.profile.family_name,
-              created_at:Date.now()
+          );
+          // Sign in with credential from the Google user.
+          firebase
+            .auth()
+            .signInWithCredential(credential)
+            .then(function(result) {
+              console.log("user signed in ");
+              if (result.additionalUserInfo.isNewUser) {
+                firebase
+                  .database()
+                  .ref("/users/" + result.user.uid)
+                  .set({
+                    gmail: result.user.email,
+                    profile_picture: result.additionalUserInfo.profile.picture,
+                    first_name: result.additionalUserInfo.profile.given_name,
+                    last_name: result.additionalUserInfo.profile.family_name,
+                    created_at: Date.now()
+                  })
+                  .then(function(snapshot) {
+                    //console.log('Snapshot', snapshot);
+                  });
+              } else {
+                firebase
+                  .database()
+                  .ref("/users/" + result.user.uid)
+                  .update({
+                    last_logged_in: Date.now()
+                  });
+              }
             })
-            .then(function (snapshot) {
-              //console.log('Snapshot', snapshot);
+            .catch(function(error) {
+              // Handle Errors here.
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // The email of the user's account used.
+              var email = error.email;
+              // The firebase.auth.AuthCredential type that was used.
+              var credential = error.credential;
+              // ...
             });
-          }else{
-            firebase
-            .database()
-            .ref('/users/' + result.user.uid).update({
-              last_logged_in:Date.now()
-            })
-          }
-          
-        })
-        .catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // The email of the user's account used.
-          var email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          var credential = error.credential;
-          // ...
-        });
-      } else {
-        console.log('User already signed-in Firebase.');
-      }
-    }.bind(this));
-  }
+        } else {
+          console.log("User already signed-in Firebase.");
+        }
+      }.bind(this)
+    );
+  };
 
   signInWithGoogleAsync = async () => {
     try {
       const result = await Google.logInAsync({
         //androidClientId: YOUR_CLIENT_ID_HERE,
-        iosClientId: "319623885326-mqtr2rg5unfiellgrqi8mnaamnhi102e.apps.googleusercontent.com",
-          
+        iosClientId:
+          "319623885326-mqtr2rg5unfiellgrqi8mnaamnhi102e.apps.googleusercontent.com",
+
         scopes: ["profile", "email"]
       });
 
@@ -140,17 +145,27 @@ export default class Login extends React.Component {
         .auth()
         .signInWithEmailAndPassword(values.email, values.password)
         .then(cred => {
+          if (cred.user.emailVerified) {
+            console.log("Is email verified?:" + cred.user.emailVerified);
+            this.props.navigation.navigate("Home");
+          } else {
+            this.props.navigation.navigate("EmailValidation");
+            console.log("Is email verified?:" + cred.user.emailVerified);
+          }
+        })
+        .then(cred => {
           return firebase
             .database()
             .ref("/users/" + cred.user.uid)
             .update({
-              last_logged_in:Date.now()
+              last_logged_in: Date.now()
             });
         })
-        .then(() => this.props.navigation.navigate("Home"))
-        .catch(error => this.setState({ errorMessage: error.message }));
+         .catch(error => this.setState({ errorMessage: error.message }));
     }
   };
+
+  
 
   handlePasswordVisibility = () => {
     this.setState(prevState => ({
@@ -222,24 +237,24 @@ export default class Login extends React.Component {
                   loading={isSubmitting}
                 />
                 <Button
-            onPress={() => this.signInWithGoogleAsync()}
-            icon={
-              <Icon
-                name="logo-google"
-                type="ionicon"
-                size={25}
-                color="white"
-                marginRight={10}
-              />
-            }
-            title="Sign in with Google"
-            buttonStyle={styles.button}
-            loading={isSubmitting}
-          />
+                  onPress={() => this.signInWithGoogleAsync()}
+                  icon={
+                    <Icon
+                      name="logo-google"
+                      type="ionicon"
+                      size={25}
+                      color="white"
+                      marginRight={10}
+                    />
+                  }
+                  title="Sign in with Google"
+                  buttonStyle={styles.button}
+                  loading={isSubmitting}
+                />
               </Fragment>
             )}
           </Formik>
-          
+
           <Button
             type="outline"
             title="No account? Sign Up"
@@ -252,7 +267,6 @@ export default class Login extends React.Component {
             onPress={() => this.props.navigation.push("PasswordReset")}
             buttonStyle={styles.button}
           />
-          
         </SafeAreaView>
       </KeyboardAvoidingView>
     );

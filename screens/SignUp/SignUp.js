@@ -65,11 +65,23 @@ export default class SignUp extends React.Component {
               created_at: Date.now()
             });
         })
-        .then(user => this.props.navigation.navigate("Home"))
+        .then(() => {
+          this.sendEmailVerification();
+        })
         .catch(error => this.setState({ errorMessage: error.message }));
     }
   };
-  handlePasswordVisibility = () => {
+
+  sendEmailVerification = () => {
+    var user = firebase.auth().currentUser;
+    user.sendEmailVerification().then(function() {
+      alert('Check your email to verify your address and gain full access')
+    }).catch(function(error) {
+      alert('Verification email not sent. A problem occurred')
+    })
+  };
+
+    handlePasswordVisibility = () => {
     this.setState(prevState => ({
       passwordIcon:
         prevState.passwordIcon === "ios-eye" ? "ios-eye-off" : "ios-eye",
@@ -131,7 +143,6 @@ export default class SignUp extends React.Component {
                   iconName="md-person"
                   iconColor="#2C384A"
                   onBlur={handleBlur("name")}
-                  autoFocus
                 />
                 <ErrorMessage errorValue={touched.name && errors.name} />
                 <FormInput
