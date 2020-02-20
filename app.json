@@ -28,7 +28,7 @@
       "bundleIdentifier": "host.exp.exponent",
       "config": {
         "googleSignIn": {
-          "reservedClientId": "com.googleusercontent.apps.319623885326-mqtr2rg5unfiellgrqi8mnaamnhi102e"
+          "reservedClientId": ""
         }
       }
     }
