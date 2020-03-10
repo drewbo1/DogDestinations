@@ -12,6 +12,7 @@ import Events from "../screens/Events";
 import Profile from "../screens/Profile";
 import PasswordReset from "../screens/PasswordReset";
 import EmailValidation from "../screens/EmailValidation";
+import Location from '../screens/Location'
 import React from "react";
 import { createSwitchNavigator, createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
@@ -65,17 +66,17 @@ const AuthTabNavigator = createBottomTabNavigator(
 const HomeStack = createStackNavigator({
   Home: Home,
   CardInfo: CardInfo,
-  Add: Add
+  
 });
 
 const MapStack = createStackNavigator({
   Map: MapTest,
-  Add: Add
+  Location: Location
 });
 
 const SearchStack = createStackNavigator({
   Search: Search,
-  Add: Add
+  Location: Location
 });
 
 const MoreStack = createStackNavigator({
