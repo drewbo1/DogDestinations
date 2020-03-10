@@ -115,7 +115,7 @@ export default class Login extends React.Component {
       const result = await Google.logInAsync({
         //androidClientId: YOUR_CLIENT_ID_HERE,
         iosClientId:
-          "",
+          "319623885326-mqtr2rg5unfiellgrqi8mnaamnhi102e.apps.googleusercontent.com",
 
         scopes: ["profile", "email"]
       });
@@ -283,12 +283,8 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
     alignItems: "center"
   },
-  textInput: {
-    height: 40,
-    marginTop: 8
-  },
   button: {
-    width: 250,
+    width: "100%",
     height: 40,
     marginTop: 10
   }
