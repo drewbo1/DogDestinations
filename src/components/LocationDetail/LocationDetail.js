@@ -1,110 +1,144 @@
-import React from 'react';
-import MapView from 'react-native-maps';
-import { Modal, View, Text, Image, Button, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
-import beaglePic from '../../assets/beagle.jpg';
-import { Rating } from 'react-native-elements';
-
-import Icon from 'react-native-vector-icons/Ionicons';
-import { ScrollView } from 'react-native-gesture-handler';
- 
+import React from "react";
+import MapView from "react-native-maps";
+import {
+  Modal,
+  View,
+  Text,
+  Image,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  SafeAreaView
+} from "react-native";
+import beaglePic from "../../assets/beagle.jpg";
+import RatingOutput from "../RatingOutput/RatingOutput";
+import { globalStyles } from "../../../styles/global";
+import Icon from "react-native-vector-icons/Ionicons";
+import { ScrollView } from "react-native-gesture-handler";
 
 const locationDetail = props => {
-    let modalContent = null;
-    ;
-    if(props.selectedLocation) {
-        modalContent = (
-            <View>
-            <Image source={beaglePic} style={styles.locationImage}/>
-            <Text style={styles.locationName}>{props.selectedLocation.name}</Text>
-            <MapView
-            style={styles.map}
-              initialRegion={{
-                  latitude: props.selectedLocation.coordinates.latitude,
-                  longitude: props.selectedLocation.coordinates.longitude,
-                  latitudeDelta: 0.0922,
-    longitudeDelta:
-      Dimensions.get("window").width /
-      Dimensions.get("window").height *
-      0.0122
-              }}
-              ref={ref => this.map = ref}> 
-              <MapView.Marker coordinate={{latitude: props.selectedLocation.coordinates.latitude, longitude:  props.selectedLocation.coordinates.longitude,}} />
-            </MapView>
-            <Text style={styles.locationArea}>Area: {props.selectedLocation.area}</Text>
-            <Text style={styles.locationType}>Type: {props.selectedLocation.type}</Text>
-            <Text style={styles.locationDesc}>Description: {props.selectedLocation.description}</Text>
-            <Rating  
-            ratingCount={5} 
-            startingValue={props.selectedLocation.rating}
-            readonly
-            />
-            </View>
-        );
-    }
-    return(
-        
-    <Modal onRequestClosed={props.onModalClosed} 
-    visible={props.selectedLocation !== null} animationType="slide">
-    <SafeAreaView>
-    <ScrollView>
-        <View style={styles.modalContainer}>
-            {modalContent}
-            <View>
-               
-                <Button style={styles.closeButton} title='close' onPress={props.onModalClosed}/>
-                <TouchableOpacity onPress={props.onItemDeleted}>
-                <View style={styles.deleteButton}>
-                    <Icon size={30} name='ios-trash' color='red'/>
-                </View>  
-                </TouchableOpacity>
-            </View>
+  let modalContent = null;
+
+  const typeIcon = {
+    walk: "ios-walk",
+    vet: "ios-medkit",
+    groomer: "ios-cut",
+    cafe: "ios-cafe"
+  };
+
+  if (props.selectedLocation) {
+    modalContent = (
+      <View>
+        <View style={styles.header}>
+          <Button
+            style={styles.closeButton}
+            title="close"
+            onPress={props.onModalClosed}
+          />
         </View>
+        <View style={globalStyles.splitBox}>
+          <View style={globalStyles.box}>
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: props.selectedLocation.coordinates.latitude,
+                longitude: props.selectedLocation.coordinates.longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta:
+                  (Dimensions.get("window").width /
+                    Dimensions.get("window").height) *
+                  0.0122
+              }}
+              ref={ref => (this.map = ref)}
+            >
+              <MapView.Marker
+                coordinate={{
+                  latitude: props.selectedLocation.coordinates.latitude,
+                  longitude: props.selectedLocation.coordinates.longitude
+                }}
+              />
+            </MapView>
+          </View>
+          <View style={globalStyles.box}>
+            <Icon
+              name={typeIcon[props.selectedLocation.type]}
+              type="ionicon"
+              size={75}
+            />
+          </View>
+        </View>
+        <View style={globalStyles.box}>
+          <Text style={{ fontSize: 35 }}>{props.selectedLocation.name}</Text>
+        </View>
+        <View style={globalStyles.splitBox}>
+          <View style={globalStyles.box}>
+            <Text style={{ fontSize: 20 }}>{props.selectedLocation.area}</Text>
+          </View>
+          <View style={globalStyles.box}>
+            <RatingOutput
+              ratingCount={5}
+              size={25}
+              readonly
+              totalRatings={props.selectedLocation.totalRatings}
+              totalStars={props.selectedLocation.totalStars}
+              ratingNumber={props.selectedLocation.ratingNumber}
+            />
+          </View>
+        </View>
+        <View style={globalStyles.box}>
+          <Text>{props.selectedLocation.description}</Text>
+        </View>
+        <View style={globalStyles.splitBox}>
+          <View style={globalStyles.box}>
+            <Text>{props.selectedLocation.userId}</Text>
+          </View>
+          <View style={globalStyles.box}>
+            <Text>{props.selectedLocation.created_at}</Text>
+          </View>
+        </View>
+        <View style={globalStyles.splitBox}>
+          <View style={globalStyles.box}>
+            <Text>Reviews</Text>
+          </View>
+          <View style={globalStyles.box}>
+            <Text>Add a review</Text>
+          </View>
+        </View>
+        <View style={globalStyles.splitBox}>
+          <View style={globalStyles.box}>
+            <Text>Rate</Text>
+          </View>
+          <View style={globalStyles.box}></View>
+        </View>
+      </View>
+    );
+  }
+  return (
+    <Modal
+      onRequestClosed={props.onModalClosed}
+      visible={props.selectedLocation !== null}
+      animationType="slide"
+    >
+      <SafeAreaView>
+        <ScrollView>
+          <View style={globalStyles.container}>{modalContent}</View>
         </ScrollView>
-        </SafeAreaView>
+      </SafeAreaView>
     </Modal>
-    
-    )};
+  );
+};
 
-    const styles = StyleSheet.create({
-        modalContainer: {
-            margin: 22,
-        },
-        locationImage: {
-            width:'100%',
-            height: 100, 
-            paddingBottom: 15
-        },
-        locationName: {
-            fontWeight: "bold",
-            textAlign: "center",
-            fontSize: 28
-        },
-        locationType: {
-            fontWeight: "bold",
-            fontSize: 18
-        },
-        locationDesc: {
-            fontWeight: "bold",
-            fontSize: 15
-        },
-        locationArea: {
-            fontWeight: "bold",
-            fontSize: 18
-        },
-        
-        deleteButton: {
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            marginTop: 15
-        }, 
-        map: {
-            width: '100%',
-            height: 100
-        }, 
-        closeButton: {
-            marginTop: 15,
-        }
-
-    });
+const styles = StyleSheet.create({
+  header: {
+    flex: 1,
+    alignItems: "flex-start",
+    margin: 20
+  },
+  map: {
+    width: "100%",
+    height: 150,
+  }
+});
 
 export default locationDetail;
