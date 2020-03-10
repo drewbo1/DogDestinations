@@ -35,7 +35,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default class SignUp extends React.Component {
-  state = {
+state = {
     passwordVisibility: true,
     confirmPasswordVisibility: true,
     passwordIcon: "ios-eye",
@@ -111,7 +111,7 @@ export default class SignUp extends React.Component {
           <View style={styles.mainTitle}>
             <Text h1>Sign Up</Text>
           </View>
-
+          <View style={styles.formInputs}>
           <Formik
             initialValues={{
               name: "",
@@ -214,6 +214,7 @@ export default class SignUp extends React.Component {
             onPress={() => this.props.navigation.navigate("Login")}
             buttonStyle={styles.button}
           />
+          </View>
         </SafeAreaView>
       </KeyboardAvoidingView>
     );
@@ -230,18 +231,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  textInput: {
-    height: 40,
-    marginTop: 8
+  formInputs: {
+    width: "100%"
   },
-  button: {
+    button: {
     height: 40,
-    width: 250,
+    width: "100%",
     marginTop: 10
   },
-  buttonTop: {
-    height: 40,
-    width: 250,
-    marginTop: 30
-  }
 });
