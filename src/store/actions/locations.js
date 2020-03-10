@@ -19,20 +19,7 @@ export const addLocation = (
 ) => {
   return dispatch => {
     dispatch(uiStartLoading());
-    /*const locationData = {
-            name: locationName,
-            type: locationType,
-            coordinates: coordinates,
-            description: locationDesc,
-            area: locationArea,
-            rating: locationRating
-           
-        };
-        fetch("https://tm470-b482f.firebaseio.com/locations.json", {
-            method: "POST",
-            body: JSON.stringify(locationData)
-        })*/
-    firebase
+      firebase
       .database()
       .ref("locations/")
       .push({
