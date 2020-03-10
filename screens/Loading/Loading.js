@@ -7,29 +7,25 @@ export default class Loading extends React.Component {
   componentDidMount() {
     this.checkStatus();
   }
-  
-  
-checkStatus = () => {
-  firebase.auth().onAuthStateChanged(user => {
-    if(user) {
-      var user = firebase.auth().currentUser;
 
-      if(user != null && email_verified){
-        var email_verified = user.emailVerified;
-        console.log('Is email verified?:' + email_verified);
-       this.props.navigation.navigate("Home");
+  checkStatus = () => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        const user = firebase.auth().currentUser;
+        const email_verified = user.emailVerified;
+        if (user != null && email_verified) {
+          console.log("Is email verified?:" + email_verified);
+          this.props.navigation.navigate("Home");
+        } else {
+          this.props.navigation.navigate("EmailValidation");
+          console.log("Is email verified?:" + email_verified);
+        }
       } else {
-        this.props.navigation.navigate("EmailValidation")
-        console.log('Is email verified?:' + email_verified);
+        this.props.navigation.navigate("SignUp");
+        console.log("No user is signed in");
       }
-    } else {
-      this.props.navigation.navigate("SignUp");
-      console.log('No user is signed in');
-    }
-  });
-};
-
- 
+    });
+  };
 
   render() {
     return (
