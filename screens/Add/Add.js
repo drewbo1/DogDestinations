@@ -1,18 +1,40 @@
 import React, { Component } from "react";
+import { Fragment } from "react";
 import {
   StyleSheet,
   View,
-  Dimensions,
-  Picker,
   ScrollView,
   Keyboard,
-  ActivityIndicator,
   SafeAreaView
 } from "react-native";
 import { connect } from "react-redux";
-import { Rating, Input, Button, Text } from "react-native-elements";
+import { Rating, Text, Button } from "react-native-elements";
 import { addLocation } from "./../../src/store/actions/index";
 import PickLocation from "./../../src/components/PickLocation/PickLocation";
+import FormInput from "../../src/components/FormInput/FormInput";
+import FormButton from "../../src/components/FormButton/FormButton";
+import ErrorMessage from "../../src/components/ErrorMessage/ErrorMessage";
+import * as firebase from "firebase";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { Picker } from "native-base";
+
+const Item = Picker.Item;
+
+const validationSchema = Yup.object().shape({
+  locationName: Yup.string()
+    .label("Name")
+    .required()
+    .min(8, "Must have at least 8 characters"),
+  locationDesc: Yup.string()
+    .label("Description")
+    .required()
+    .min(10, "Must have at least 30 characters"),
+  locationArea: Yup.string()
+    .label("Area")
+    .required()
+    .min(4, "Must have at least 4 characters")
+});
 
 class Add extends Component {
   state = {
@@ -24,7 +46,7 @@ class Add extends Component {
         value: null
       },
       locationType: {
-        value: ""
+        value: "walk"
       },
       locationDesc: {
         value: ""
@@ -34,7 +56,15 @@ class Add extends Component {
       },
       locationRating: {
         value: ""
+      },
+      userId: {
+        value: ""
       }
+    },
+    selectedItem: undefined,
+    selected1: "",
+    results: {
+      items: []
     }
   };
 
@@ -42,16 +72,36 @@ class Add extends Component {
     title: "Add"
   };
 
-  locationAddedHandler = () => {
+  componentDidMount() {
+    this.getCurrentUser();
+  }
+
+  locationAddedHandler = (values, actions) => {
+    const { locationName, locationDesc, locationArea } = values;
     this.props.onAddLocation(
-      this.state.controls.locationName.value,
-      this.state.controls.locationType.value,
+      locationName,
+      this.state.selected1,
       this.state.controls.coordinates.value,
-      this.state.controls.locationDesc.value,
-      this.state.controls.locationArea.value,
+      locationDesc,
+      locationArea,
       this.state.controls.locationRating.value,
+      this.state.controls.userId.value,
       this.props.navigation.goBack()
     );
+  };
+
+  getCurrentUser = () => {
+    const userId = firebase.auth().currentUser.uid;
+    this.setState(prevState => {
+      return {
+        controls: {
+          ...prevState.controls,
+          userId: {
+            value: userId
+          }
+        }
+      };
+    });
   };
 
   locationPickedHandler = coordinates => {
@@ -61,62 +111,6 @@ class Add extends Component {
           ...prevState.controls,
           coordinates: {
             value: coordinates
-          }
-        }
-      };
-    });
-  };
-
-  locationNameChangedHandler = val => {
-    this.setState(prevState => {
-      return {
-        controls: {
-          ...prevState.controls,
-          locationName: {
-            ...prevState.controls.locationName,
-            value: val
-          }
-        }
-      };
-    });
-  };
-
-  locationTypeChangedHandler = val => {
-    this.setState(prevState => {
-      return {
-        controls: {
-          ...prevState.controls,
-          locationType: {
-            ...prevState.controls.locationType,
-            value: val
-          }
-        }
-      };
-    });
-  };
-
-  locationDescChangedHandler = val => {
-    this.setState(prevState => {
-      return {
-        controls: {
-          ...prevState.controls,
-          locationDesc: {
-            ...prevState.controls.locationDesc,
-            value: val
-          }
-        }
-      };
-    });
-  };
-
-  locationAreaChangedHandler = val => {
-    this.setState(prevState => {
-      return {
-        controls: {
-          ...prevState.controls,
-          locationArea: {
-            ...prevState.controls.locationArea,
-            value: val
           }
         }
       };
@@ -142,20 +136,13 @@ class Add extends Component {
       Keyboard.dismiss();
     }
   };
+  onValueChange(value: string) {
+    this.setState({
+      selected1: value
+    });
+  }
 
   render() {
-    let addButton = (
-      <Button
-        title="Add location"
-        style={styles.locationButton}
-        onPress={this.locationAddedHandler}
-      />
-    );
-
-    if (this.props.isLoading) {
-      addButton = <ActivityIndicator />;
-    }
-
     return (
       <SafeAreaView>
         <ScrollView>
@@ -165,48 +152,93 @@ class Add extends Component {
               Complete the information below to add a location to our list.
             </Text>
 
-            <Input
-              style={styles.locationNameInput}
-              placeholder="Name of location"
-              onChangeText={this.locationNameChangedHandler}
-              value={this.state.locationName}
-            />
-           <Input
-              style={styles.locationDesc}
-              multiline={true}
-              numberOfLines={4}
-              onChangeText={this.locationDescChangedHandler}
-              value={this.state.locationDesc}
-              placeholder="Description of location"
-              onKeyPress={this.handleKeyDown}
-            />
-            <Input
-              style={styles.locationArea}
-              onChangeText={this.locationAreaChangedHandler}
-              value={this.state.locationArea}
-              placeholder="Area of location"
-              onKeyPress={this.handleKeyDown}
-            />
-            <PickLocation onLocationPick={this.locationPickedHandler} />
-            <Picker
-              style={styles.locationType}
-              selectedValue={this.state.locationType}
-              onValueChange={this.locationTypeChangedHandler}
-              value={this.state.locationType}
+            <Formik
+              initialValues={{
+                locationName: "",
+                locationDesc: "",
+                locationArea: ""
+              }}
+              onSubmit={(values, actions) => {
+                this.locationAddedHandler(values, actions);
+              }}
+              validationSchema={validationSchema}
             >
-              <Picker.Item label="Please select a location type" value="" />
-              <Picker.Item label="Walk" value="walk" />
-              <Picker.Item label="Vet" value="vet" />
-              <Picker.Item label="Cafe" value="cafe" />
-              <Picker.Item label="Groomer" value="groomer" />
-            </Picker>
-            <Rating
-              showRating
-              count="(10)"
-              onFinishRating={this.locationRatingChangedHandler}
-              style={{ marginTop: 20 }}
-            />
-            <View>{addButton}</View>
+              {({
+                handleChange,
+                values,
+                handleSubmit,
+                errors,
+                isValid,
+                isSubmitting,
+                touched,
+                handleBlur
+              }) => (
+                <Fragment>
+                  <FormInput
+                    name="locationName"
+                    value={values.locationName}
+                    onChangeText={handleChange("locationName")}
+                    placeholder="Enter a name for the location"
+                    onBlur={handleBlur("locationName")}
+                  />
+                  <ErrorMessage
+                    errorValue={touched.locationName && errors.locationName}
+                  />
+                  <FormInput
+                    name="locationDesc"
+                    value={values.locationDesc}
+                    onChangeText={handleChange("locationDesc")}
+                    placeholder="Enter a description of the location"
+                    onBlur={handleBlur("locationDesc")}
+                    multiline={true}
+                  />
+                  <ErrorMessage
+                    errorValue={touched.locationDesc && errors.locationDesc}
+                  />
+                  <FormInput
+                    name="locationArea"
+                    value={values.locationArea}
+                    onChangeText={handleChange("locationArea")}
+                    placeholder="Enter an area for the location"
+                    onBlur={handleBlur("locationArea")}
+                  />
+                  <ErrorMessage
+                    errorValue={touched.locationArea && errors.locationArea}
+                  />
+
+                  <Picker
+                    iosHeader="Select one"
+                    mode="dropdown"
+                    style={{ width: "100%" }}
+                    placeholder="Pick a location type"
+                    selectedValue={this.state.selected1}
+                    onValueChange={this.onValueChange.bind(this)}
+                  >
+                    <Item label="Walk" value="walk" />
+                    <Item label="Vet" value="vet" />
+                    <Item label="Cafe" value="cafe" />
+                    <Item label="Groomer" value="groomer" />
+                  </Picker>
+
+                  <PickLocation onLocationPick={this.locationPickedHandler} />
+                  <Rating
+                    showRating
+                    onFinishRating={this.locationRatingChangedHandler}
+                    style={{ marginTop: 20 }}
+                    minValue={1}
+                  />
+
+                  <FormButton
+                    onPress={handleSubmit}
+                    style={styles.submitButton}
+                    title="Add location"
+                    buttonColor="#039BE5"
+                    disabled={!isValid || isSubmitting}
+                    loading={isSubmitting}
+                  />
+                </Fragment>
+              )}
+            </Formik>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -218,36 +250,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    //padding: 20
+    justifyContent: "center",
+    padding: 20
   },
-  map: {
-    height: 100
-  },
-  button: {
-    width: 250,
+  submitButton: {
+    width: "100%",
     marginBottom: 10
-  },
-  locationButton: {
-    width: 250,
-    marginBottom: 10
-  },
-  locationNameInput: {
-    marginBottom: 10
-  },
-  locationType: {
-    width: "90%",
-    height: 50,
-    marginBottom: 10
-  },
-  locationDesc: {
-    width: "90%",
-    marginBottom: 10,
-    backgroundColor: "#fff"
-  },
-  locationArea: {
-    width: "90%",
-    marginBottom: 10,
-    backgroundColor: "#fff"
   },
   heading: {
     fontWeight: "bold",
@@ -259,6 +267,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 12,
     margin: 10
+  },
+  typeDropdown: {
+    width: "100%"
   }
 });
 
@@ -266,20 +277,22 @@ const mapDispatchToProps = dispatch => {
   return {
     onAddLocation: (
       locationName,
-      locationType,
+      selected1,
       coordinates,
       locationDesc,
       locationArea,
-      locationRating
+      locationRating,
+      userId
     ) =>
       dispatch(
         addLocation(
           locationName,
-          locationType,
+          selected1,
           coordinates,
           locationDesc,
           locationArea,
-          locationRating
+          locationRating,
+          userId
         )
       )
   };
