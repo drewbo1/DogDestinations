@@ -1,6 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, View, ActivityIndicator, Text, SafeAreaView } from "react-native";
-import { Icon, SearchBar } from "react-native-elements";
+import {
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  SafeAreaView
+} from "react-native";
+import { Icon } from "react-native-elements";
 import { connect } from "react-redux";
 import LocationList from "../../src/components/LocationLIst/LocationList.js";
 import {
@@ -12,37 +17,16 @@ import {
 import LocationDetail from "../../src/components/LocationDetail/LocationDetail";
 import { withNavigation } from "react-navigation";
 
-
 class Search extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: "Search",
-      headerRight: (
-        <Icon
-          name="ios-add"
-          type="ionicon"
-          size={50}
-          iconStyle={{ paddingRight: 20 }}
-          onPress={() => navigation.push("Add")}
-        />
-      )
-    };
+      };
   };
 
-  searchFilterFunction = text => {    
-    const newData = this.props.locations.filter(info => {      
-      const itemData = `${info.item.name.toUpperCase()}`;
-      
-       const textData = text.toUpperCase();
-        
-       return itemData.indexOf(textData) > -1;    
-    });
-    
-    this.setState({ data: newData });  
-  };
-
-  locationSelectedHandler = key => {
+    locationSelectedHandler = key => {
     this.props.onSelectLocation(key);
+    this.props.navigation.navigate('Location', {LocationKey: key})
   };
 
   locationDeletedHandler = () => {
@@ -57,7 +41,6 @@ class Search extends Component {
     const { navigation } = this.props;
     this.focusListener = navigation.addListener("didFocus", () => {
       this.props.onLoadLocations();
-      
     });
   }
 
@@ -67,7 +50,6 @@ class Search extends Component {
 
   render() {
     let locList = (
-      
       <LocationList
         style={styles.locationList}
         locations={this.props.locations}
@@ -79,21 +61,12 @@ class Search extends Component {
     }
 
     return (
-       
       <View style={styles.container}>
-       <SafeAreaView>
+        <SafeAreaView>
           
-        
-        
-        <LocationDetail
-          selectedLocation={this.props.selectedLocation}
-          onItemDeleted={this.locationDeletedHandler}
-          onModalClosed={this.modalClosedHandler}
-        />
-        <View>{locList}</View>
+          <View>{locList}</View>
         </SafeAreaView>
       </View>
-     
     );
   }
 }
@@ -101,23 +74,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#fff",
-    
-  },
-  heading: {
-    fontWeight: "bold",
-    fontSize: 20,
-    textDecorationLine: "underline",
-    margin: 5,
-    textAlign: "center"
-  },
-  subHeading: {
-    fontWeight: "bold",
-    fontSize: 12,
-    margin: 5,
-    textAlign: "center"
-  },
-  locationList: {}
+    backgroundColor: "#fff"
+  }
 });
 
 const mapStateToProps = state => {
